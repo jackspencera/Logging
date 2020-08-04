@@ -38,9 +38,14 @@ class Keylogs:
 
     def showData(self, i):
         # Update the figure here with the updated log data
+
         groups=list(self.log.keys())
+        groups=sorted(self.log,key=self.log.get,reverse=True)
         values=list(self.log.values())
+        values.sort(reverse=True)
         #print('running')
+        print(groups)
+        print(values)
         plt.cla()
         plt.bar(groups,values)
         #$plt.title('Key strokes')

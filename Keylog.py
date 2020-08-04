@@ -26,7 +26,8 @@ class Keylogs:
         else:
             if key=="esc" and (self.lastKey=="1" or self.lastKey=="2"):
                 # Close the plot and write the analysis
-                self.analyse()
+                direc=self.analyse()
+                plt.savefig(direc+".png", bbox_inches='tight')
                 plt.close(self.fig)
                 sys.exit(0)
             if key not in self.noLog:
@@ -44,8 +45,8 @@ class Keylogs:
         values=list(self.log.values())
         values.sort(reverse=True)
         #print('running')
-        print(groups)
-        print(values)
+        #print(groups)
+        #print(values)
         plt.cla()
         plt.bar(groups,values)
         #$plt.title('Key strokes')
@@ -59,10 +60,9 @@ class Keylogs:
   #      plt.bar(groups,values)
 
     def analyse(self):
-        pass
         # Print some basic analysis
         if self.lastKey=="1":
-            self.gameAnalyse()
+            return self.gameAnalyse()
         elif self.lastKey=="2":
             self.wordAnalyse()
 
@@ -73,8 +73,8 @@ class Keylogs:
         dir=os.path.join("C:\\","Logs","Games")
         if not os.path.exists(dir):
             os.mkdir(dir)
-        
-        f=open(dir+"\\"+datetime.now().strftime("%m%d%Y-%Hx%Mx%S")+".txt",'w+')
+        fileName=dir+"\\"+datetime.now().strftime("%m%d%Y-%Hx%Mx%S")
+        f=open(fileName+".txt",'w+')
         qs=str(self.log.get('q'))
         ws=str(self.log.get('w'))
         es=str(self.log.get('e'))
@@ -82,6 +82,7 @@ class Keylogs:
         f.write("Buttons Pressed:\nQ: "+qs+"\nW: "+ws+"\nE: "+es+"\nR: "+rs)
         f.write("\n\nTotal Key Strokes: " + str(sum(list(self.log.values()))))
         f.close()
+        return fileName
 
     def wordAnalyse(self):
         pass
